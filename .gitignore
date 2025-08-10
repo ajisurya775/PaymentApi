@@ -1,0 +1,44 @@
+# Ignore build results
+bin/
+obj/
+out/
+
+# VS Code settings
+.vscode/
+*.code-workspace
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Auto-generated files
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.vspscc
+*.vssscc
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+project.lock.json
+project.fragment.lock.json
+
+# Rider / JetBrains
+.idea/
+*.iml
+
+# VS
+.vs/
+*.dbmdl
+
+# Others
+*.tmp
+*.temp
+*.bak
