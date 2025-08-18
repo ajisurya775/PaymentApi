@@ -12,7 +12,7 @@ using PaymentApi.Data;
 namespace PaymentApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250810075039_InitialCreate")]
+    [Migration("20250818054357_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,6 +44,10 @@ namespace PaymentApi.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("EndPointUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -58,6 +62,71 @@ namespace PaymentApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MidtransCredentials");
+                });
+
+            modelBuilder.Entity("PaymentApi.Models.MidtransRequestLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Header")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MidtransRequestLogs");
+                });
+
+            modelBuilder.Entity("PaymentApi.Models.MidtransResponseLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Header")
+                        .HasColumnType("text");
+
+                    b.Property<long>("MidtransRequestLogId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MidtransRequestLogId");
+
+                    b.ToTable("MidtransResponseLogs");
                 });
 
             modelBuilder.Entity("PaymentApi.Models.PaymentLinkCharge", b =>
@@ -79,10 +148,11 @@ namespace PaymentApi.Migrations
                     b.Property<Guid>("MidtransCredentialId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("OrderId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<string>("OrderNumber")
+                    b.Property<string>("PaymentUrl")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -98,6 +168,17 @@ namespace PaymentApi.Migrations
                     b.HasIndex("MidtransCredentialId");
 
                     b.ToTable("PaymentLinkCharges");
+                });
+
+            modelBuilder.Entity("PaymentApi.Models.MidtransResponseLog", b =>
+                {
+                    b.HasOne("PaymentApi.Models.MidtransRequestLog", "MidtransRequestLog")
+                        .WithMany()
+                        .HasForeignKey("MidtransRequestLogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MidtransRequestLog");
                 });
 
             modelBuilder.Entity("PaymentApi.Models.PaymentLinkCharge", b =>

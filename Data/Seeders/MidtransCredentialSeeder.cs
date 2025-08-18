@@ -20,6 +20,7 @@ namespace PaymentApi.Data.Seeders
                         Name = "Midtrans Dev",
                         ClientKey = "SB-Mid-client-E-dt3aH5Q2h5uo7N",
                         ServerKey = "SB-Mid-server-rR_3WWxUlSs0OSyprfrWsWge",
+                        EndPointUrl = "https://app.sandbox.midtrans.com",
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
                     },
@@ -29,6 +30,7 @@ namespace PaymentApi.Data.Seeders
                         Name = "Midtrans Prod",
                         ClientKey = "client-key-prod",
                         ServerKey = "server-key-prod",
+                        EndPointUrl = "https://app.midtrans.com",
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
                     }

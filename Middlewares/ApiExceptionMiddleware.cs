@@ -79,6 +79,21 @@ public class ApiExceptionMiddleware
                         Data = null
                     };
                     break;
+                case InvalidOperationException _:
+                    statusCode = 404;
+                    metaCode = 40400;
+                    apiResponse = new ApiResponse
+                    {
+                        Meta = new Meta
+                        {
+                            Success = false,
+                            Code = metaCode,
+                            Message = "Resource not found"
+                        },
+                        Data = null
+                    };
+                    break;
+
 
                 default:
                     statusCode = 500;

@@ -4,12 +4,31 @@ using PaymentApi.Data.Seeders;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using PaymentApi.Filters;
+using PaymentApi.Services.PaymentLinkService;
+using PaymentApi.Repositories.MidtransCredentialRepository;
+using PaymentApi.Services.PaymentGatewayService;
+using PaymentApi.Repositories.MidtransRequestLogRepository;
+using PaymentApi.Repositories.MidtransResponseLogRepository;
+using PaymentApi.Repositories.PaymentLinkChargeRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Tambahkan DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddHttpClient();
+
+// Register Service
+builder.Services.AddScoped<IPaymentLinkService, PaymentLinkService>();
+builder.Services.AddScoped<IPaymentGatewayService, PaymentGatewayService>();
+
+// Register Repository
+builder.Services.AddScoped<IMidtransCredentialRepository, MidtransCredentialRepository>();
+builder.Services.AddScoped<IMidtransRequestLogRepository, MidtransRequestLogRepository>();
+builder.Services.AddScoped<IMidtransResponseLogRepository, MidtransResponseLogRepository>();
+builder.Services.AddScoped<IPaymentLinkChargeRepository, PaymentLinkChargeRepository>();
+
 
 // Tambahkan Swagger
 builder.Services.AddSwaggerGen(c =>
